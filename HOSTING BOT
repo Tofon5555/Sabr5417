@@ -1,0 +1,278 @@
+<?php
+ob_start();
+define('API_KEY','6051562557:AAEoHjEnNhQddZ-Fp1Qf5AFoyJOCt_tJs-w');
+$admin = "6154672159";
+
+
+
+function ty($ch){ 
+return bot('sendChatAction', [
+'chat_id' => $ch,
+'action' => 'typing',
+]);
+}
+
+function bot($method,$datas=[]){
+    $url = "https://api.telegram.org/bot".API_KEY."/".$method;
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,$url);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+    curl_setopt($ch,CURLOPT_POSTFIELDS,$datas);
+    $res = curl_exec($ch);
+    if(curl_error($ch)){
+        var_dump(curl_error($ch));
+    }else{
+        return json_decode($res);
+    }
+}
+
+$update = json_decode(file_get_contents('php://input'));
+$message = $update->message;
+$mid = $message->message_id;
+$message_id=$message->message_id;
+$cid = $message->chat->id;
+$ci = $message->username;
+$from_id = $message->from->id;
+$tx = $message->text;
+$photo_id=$message->photo[1]->file_id;
+
+$joy = file_get_contents("$cid/$cid.joy");
+$step = file_get_contents("$cid/$cid.step");
+
+$button = json_encode([
+'resize_keyboard'=>true,
+'keyboard'=>[
+[['text'=>"🎯Bot ulash"]],
+[['text'=>"📌SetWebHook"],['text'=>"📝Yordam"],],
+[['text'=>"🤖Bot haqida"],['text'=>"📊Statistika"],],
+]
+]);
+$admo = json_encode([
+'resize_keyboard'=>true,
+'keyboard'=>[
+[['text'=>"🔙Orqaga qaytish"]],
+]
+]);
+
+if($tx == "🔙Orqaga qaytish"){
+     bot('sendMessage',[
+     'chat_id'=>$cid,
+'text'=>"<b>🔹Siz Bosh menyudasiz. Bo'limni tanlang:</b>",
+     'parse_mode'=>'html',
+     'reply_markup'=>json_encode([
+'resize_keyboard'=>true,
+'keyboard'=>[
+[['text'=>"🎯Bot ulash"]],
+[['text'=>"📌SetWebHook"],['text'=>"📝Yordam"],],
+[['text'=>"🤖Bot haqida"],['text'=>"📊Statistika"],],
+]
+])
+]);
+}
+
+if($tx == "🎯Bot ulash"){ 
+ty($cid);
+mkdir("$cid");
+bot('sendMessage',[
+'chat_id'=>$cid,
+'text'=>"*Serverga joylamoqchi bo'lgan tayyor PHP bot kodingizni yuboring:*",
+'parse_mode'=>'markdown',
+'reply_markup'=>$admo
+]);
+file_put_contents("$cid/$cid.step", "logo");
+$baza = file_get_contents("azolar.dat");
+if(mb_stripos($baza, $cid) !== false){
+}else{
+file_put_contents("azolar.dat", "$baza\n$cid");
+}
+}
+$doc=$message->document;
+$doc_id=$doc->file_id;
+if(isset($message->document) and $step == "logo"){
+ty($cid);
+$url = json_decode(file_get_contents('https://api.telegram.org/bot'.API_KEY.'/getFile?file_id='.$doc_id),true);
+$path=$url['result']['file_path'];
+$file = 'https://api.telegram.org/file/bot'.API_KEY.'/'.$path;
+$type = strtolower(strrchr($file,'.')); 
+$type=str_replace('.','',$type);
+$okey = file_put_contents("$from_id/index.$type",file_get_contents($file));
+if($okey){
+bot('sendMessage',[
+ 'chat_id'=>$cid,
+ 'text'=>"
+ ⏳ <b>Fayl serverga yuklanmoqda...</b>",
+ 'parse_mode'=>"HTML"
+ ]);
+ sleep(2);
+bot('editMessageText',[
+ 'chat_id'=>$cid,
+ 'text'=>'⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️0%'
+ ]);
+ sleep(1);
+bot('editMessageText',[
+ 'chat_id'=>$cid,
+ 'message_id'=>$message_id +1,
+ 'text'=>'⬛️⬜️⬜️⬜️⬜️⬜️⬜️⬜️10%'
+ ]);
+ sleep(1);
+bot('editMessageText',[
+ 'chat_id'=>$cid,
+ 'message_id'=>$message_id + 1,
+ 'text'=>'⬛️⬛️⬜️⬜️⬜️⬜️⬜️⬜️20%'
+ ]);
+ sleep(1);
+bot('editMessageText',[
+ 'chat_id'=>$cid,
+ 'message_id'=>$message_id + 1,
+ 'text'=>'⬛️⬛️⬛️⬜️⬜️⬜️⬜️⬜️30%'
+ ]);
+ sleep(1);
+bot('editMessageText',[
+ 'chat_id'=>$cid,
+ 'message_id'=>$message_id + 1,
+ 'text'=>'⬛️⬛️⬛️🔳⬜️⬜️⬜️⬜️40%'
+ ]);
+ sleep(1);
+bot('editMessageText',[
+ 'chat_id'=>$cid,
+ 'message_id'=>$message_id + 1,
+ 'text'=>'⬛️⬛️⬛️⬛️⬜️⬜️⬜️⬜️50%'
+ ]);
+ sleep(1);
+bot('editMessageText',[
+ 'chat_id'=>$cid,
+ 'message_id'=>$message_id + 1,
+ 'text'=>'⬛️⬛️⬛️⬛️⬛️⬜️⬜️⬜️60%'
+ ]);
+ sleep(1);
+bot('editMessageText',[
+ 'chat_id'=>$cid,
+ 'message_id'=>$message_id + 1,
+ 'text'=>'⬛️⬛️⬛️⬛️⬛️▪️⬜️⬜️70%'
+ ]);
+ sleep(1);
+bot('editMessageText',[
+ 'chat_id'=>$cid,
+ 'message_id'=>$message_id + 1,
+ 'text'=>'⬛️⬛️⬛️⬛️⬛️⬛️⬜️⬜️80%'
+ ]);
+ sleep(1);
+bot('editMessageText',[
+ 'chat_id'=>$cid,
+ 'message_id'=>$message_id + 1,
+ 'text'=>'⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬜️90%'
+ ]);
+ sleep(1);
+bot('editMessageText',[
+ 'chat_id'=>$cid,
+ 'message_id'=>$message_id + 1,
+ 'text'=>'⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️100%'
+ ]);
+ sleep(1);
+bot('sendmessage',[
+'chat_id'=>$cid,
+//'message_id'=>$mid + 1,
+'text'=>"♨️ <b>Fayl bizning serverga muvaffaqiyatli yuklandi!</b> Endilikda botingizni SetWebHook qilishingiz kerak. \n\nBuning uchun SetWebHook tugmasini bosing👇 ",
+'parse_mode'=>"html",
+'reply_markup'=>json_encode([
+'resize_keyboard'=>true,
+  'keyboard'=>[
+[['text'=>"📌SetWebHook"]],
+  ]
+  ])
+]);
+}else{
+bot('sendMessage',[
+'chat_id'=>$cid,
+'text'=>"Xatolik #1. Iltimos shu xabarni [@uzwebdev] ga yuboring!",
+'parse_mode'=>markdown,
+'reply_markup'=>$admo,
+]);
+}
+}
+
+if(isset($message->photo) and $joy){
+$url = json_decode(file_get_contents('https://api.telegram.org/bot'.API_KEY.'/getFile?file_id='.$photo_id),true);
+$path=$url['result']['file_path'];
+$file = 'https://api.telegram.org/file/bot'.API_KEY.'/'.$path;
+$okey = file_put_contents("$cid/$cid.pic.png",file_get_contents($file));
+$type = strtolower(strrchr($file,'.')); 
+$type=str_replace('.','',$type);
+}
+
+if($tx == "/start" || $tx == "/host"){
+     bot('sendMessage',[
+     'chat_id'=>$cid,
+     'text'=>'*Assalomu aleykum XostBotga hush kelibsiz, agar botimizga birinchi bor tashrif buyurgan bo`lsangiz Yordam menyusidan bilib olishingiz mumkin*! ',
+     'parse_mode'=>'markdown',
+     'reply_markup'=> $button,
+     ]);
+}
+if($tx == "📊Statistika"){
+$baza = file_get_contents("azolar.dat");
+$obsh = substr_count($baza,"\n");
+$gruppa = substr_count($baza,"-");
+$lichka = $obsh - $gruppa;
+
+     bot('sendMessage',[
+     'chat_id'=>$cid,
+     'text'=>"*Bot foydalanuvchilari: $obsh ta*\n\n⏲️Vaqti:".date("H:i d.m.Y", strtotime('3 hour'))."",
+     'parse_mode'=>'markdown',
+     'reply_markup'=>$admo,
+     ]);
+
+}if($tx == "🤖Bot haqida"){
+     bot('sendMessage',[
+     'chat_id'=>$cid,
+'text'=>"<b>Bu botni sizlarga taqdim etishimizdan maqsad, yangi boshlovchilar uchun qulaylik tug'dirish maqsadida</b> @UzWebDev <b>tomonidan yaratildi.</b> \n\n<i>Bu xizmat sizlar uchun mutlaqo bepul va bepuligacha qoladi. Iltimos unga xar xil bo'lar bo'lmas PHP kodlarni yuklamang </i>🙏",
+     'parse_mode'=>'html',
+     'reply_markup'=> $admo,
+     ]);
+}
+if($tx == "📝Yordam"){
+     bot('sendMessage',[
+     'chat_id'=>$cid,
+     'text'=>"<b>Botdan foydalanish uchun siz 🎯Bot ulash tugmasini bosing va PHP faylingizni yuboring, keyin esa SetWebHook qilishingiz zarur. Bu haqida ba'tafsil ma'lumot olish uchun menyudan 📌SetWebHook tugmasini bosing.</b>\n<b>Ushbu bot orqali joylagan xar bir PHP kodingiz, @UzBots_Robot konstruktor boti serveriga joylanadi!</b>\n\n✅<b>Savollarga javoblar:</b>\n<b>Kodni serverga joyladim lekin botim ishlamayapti?</b>\n-PHP kodingizni serverga joylaganizdan so'ng SetWebHook qilishingiz kerak!\n\n<b>Nechta bot kodini joylay olaman?</b>\n-Xozirgi vaqtda faqat 1 ta bot kodini joylay olasiz!\n\n<b>2 ta bot kodini joylasamchi?</b>\n-U xolda 1-botingiz serverdan o'chib ketadi va 2-chi botingiz ishlaydi!",
+     'parse_mode'=>'html',
+     'reply_markup'=> $admo,
+     ]);
+}if($tx == "📌SetWebHook"){
+     bot('sendMessage',[
+     'chat_id'=>$cid,
+     'text'=>"<b>Botingiz PHP kodini bizni serverga yuklangangizdan so'ng, SetWebHook qilishingiz zarur.</b>\nBuning uchun telefongiz brauzeriga quyidagi URL ni yozing faqat <b>BOT_TOKENI</b> degan joyga botingiz tokenini kiriting!\n\n <code>https://api.telegram.org/bot</code>BOT_TOKENI<code>/setwebhook?url=https://botlar.altervista.org/hosting/$from_id/index.php</code> \n\n📨 <b>Savollar uchun:</b> @BotBor_Robot",
+     'parse_mode'=>'html',
+     'reply_markup'=> $admo,
+     ]);
+}
+$yubbi = "Yuboriladigon xabarni kiriting. Xabar turi markdown";
+
+    if($tx == "/send" and $cid == $admin){
+      bot('sendMessage',[
+      'chat_id'=>$cid,
+      'text'=>$yubbi,
+      'reply_markup'=>$admo,
+      ]);
+      file_put_contents("$cid/$cid.step","send");
+    }
+
+    if($step == "send" and $cid == $admin){
+      if($tx == "🔙Orqaga qaytish"){
+      unlink("$cid/$cid.step");
+      bot('sendMessage',[
+      'chat_id'=>$admin,
+      'text'=>"Text bormadi!!",
+      'reply_markup'=>$button,
+      ]);
+      }else{
+      $idss=file_get_contents("azolar.dat");
+      $idszs=explode("\n",$idss);
+      foreach($idszs as $idlat){
+      bot('sendMessage',[
+      'chat_id'=>$idlat,
+      'text'=>$tx,
+      ]);
+      }
+      del("$cid/$cid.step");
+      }
+    }
+?>
